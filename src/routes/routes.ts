@@ -1,6 +1,12 @@
-const routes = require('express').routes;
-const TaskController = require('../controllers/TaskController');
+const express = require('express');
 
-routes.get("/", TaskController.getAll)
+export const routes = express.Router();
+import { TaskController } from '../controllers/TaskController';
+import { validateTaskCreation } from '../middlewares/TaskMiddlewares';
+const taskController = new TaskController();
 
-export default routes;
+routes.get("/", taskController.getAllTasks);
+routes.post("/create", validateTaskCreation, taskController.createTask);
+routes.put('/:id', taskController.updateTask);
+routes.delete('/:id', taskController.deleteTask);
+routes.get('/:id', taskController.getTaskById);
