@@ -1,22 +1,27 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 
-// colection
-const TaskSchema = new mongoose.Schema({
+// // colection
+
+
+// // module.exports = mongoose.model("Task", TaskSchema)
+// exports = mongoose.model("Task", TaskSchema)
+
+import { Document, model, Schema } from 'mongoose';
+
+export interface ITask extends Document {
+    title: string;
+    description: string;
+}
+const TaskSchema = new Schema<ITask>({
     title: {
         type: String,
         required: true
     },
     description: {
-        type: String
+        type: String,
+        required: true
     },
-    completed: {
-        type: Boolean,
-        default: false
-    },
-    Date: {
-        type: Date,
-        default: Date.now
-    }
 });
 
-module.exports = mongoose.model("Task", TaskSchema)
+
+export const Task = model<ITask>('Task', TaskSchema);
