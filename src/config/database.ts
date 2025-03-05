@@ -1,17 +1,15 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 
 // Conexão ao MongoDB
 const connectToDB = async () => {
+    const uri = process.env.MONGO_URI;
 
     try {
-        await mongoose.connect(
-            "mongodb+srv://jasminepinheiro14:123@cluster0.d2rik.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
-            {
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-            }
-        );
+        await mongoose.connect(uri);
+    
         console.log("MongoDB conectado");
+    
     } catch (err) {
         console.error("Erro ao conectar ao MongoDB:", err);
     }
