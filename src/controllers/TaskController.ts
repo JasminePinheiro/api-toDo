@@ -2,6 +2,7 @@ import { Task } from "../models/TaskModel"
 import { TasksRepository } from "../repositories/tasks/tasks_repository"
 import { TaskService } from "../services/TaskService";
 
+// camada de apresentação
 export class TaskController {
     
     async getAllTasks(req: any, res: any) {
@@ -13,7 +14,6 @@ export class TaskController {
             if (!tasksList) {
                 return res.status(404).send({ message: 'No tasks found.' })
             }
-
             return res.status(200).send(tasksList)
         } catch (err) {
             const error = err as Error

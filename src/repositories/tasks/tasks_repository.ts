@@ -1,5 +1,6 @@
 import { ITask, Task } from '../../models/TaskModel';
 
+// camada de acesso dados
 export abstract class AbsTasksRepository {
     abstract getAllTasks(): Promise<ITask[]>
     abstract createTask(task: ITask): Promise<ITask>;

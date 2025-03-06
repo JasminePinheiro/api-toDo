@@ -1,9 +1,10 @@
 import { ITask } from "../models/TaskModel";
 import { TasksRepository } from "../repositories/tasks/tasks_repository";
 
+// camada de negócio
 export class TaskService {
-    private tasksRepository: TasksRepository;
 
+    private tasksRepository: TasksRepository;
 
     constructor(tasksRepository: TasksRepository) {
         this.tasksRepository = tasksRepository;
