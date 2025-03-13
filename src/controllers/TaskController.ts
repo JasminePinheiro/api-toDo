@@ -4,13 +4,18 @@ import { TaskService } from "../services/TaskService";
 
 // camada de apresentação
 export class TaskController {
-    
+
+    // private taskService: TaskService
+    constructor(private taskService: TaskService) {
+
+    }
+
     async getAllTasks(req: any, res: any) {
-        
+
         try {
             // Cria uma instância do TaskService, passando uma nova instância de TasksRepository como parâmetro
-            const taskService = new TaskService(new TasksRepository());
-            const tasksList = await taskService.getAllTasks();
+            // const taskService = new TaskService(new TasksRepository());
+            const tasksList = await this.taskService.getAllTasks();
             if (!tasksList) {
                 return res.status(404).send({ message: 'No tasks found.' })
             }
@@ -43,7 +48,7 @@ export class TaskController {
     };
 
     async updateTask(req: any, res: any) {
-        
+
         const taskId = req.params.id;
         const updates = req.body;
 
