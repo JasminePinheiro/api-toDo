@@ -4,13 +4,28 @@ import jwt from "jsonwebtoken";
 
 export type UserSignInRequest = {
     name: string,
-    password: string 
+    password: string,
 }
 export class UserService {
 
-    async signIn(user: UserSignInRequest): Promise<unknown> {
+    generateTokens(user: I_UserDocument){
+        const accessToken = jwt.sign(
+            {id: user._id, name: user.name },
+            process.env.SECRET_KEY as string,
+            { expiresIn: '20s' } // Tempo de expiração do access token
+        );
+
+        const refreshToken = jwt.sign(
+            { id: user._id, name: user.name },
+            process.env.REFRESH_SECRET_KEY as string,
+            { expiresIn: '7d' }
+        );
+
+        return { accessToken, refreshToken}
+    }
+
+        async signIn(user: UserSignInRequest): Promise<unknown> {
         try {
-            console.log(user);
             
             const foundUser = await UserModel.findOne({ name: user.name })
     
@@ -20,10 +35,9 @@ export class UserService {
             const isMatch = bcrypt.compareSync(user.password, foundUser.password)
 
             if (isMatch) {
-                const token = jwt.sign({_id: foundUser._id?.toString(), name: foundUser.name}, process.env.SECRET_KEY, {
-                    expiresIn: '2 hours',
-                });
-                return {user: {_id: foundUser._id, name: foundUser.name}, token: token}
+                const {_id, name } = foundUser;
+                const { accessToken, refreshToken } = this.generateTokens(foundUser);
+                return {user: {_id, name}, accessToken, refreshToken}
             } else {
                 throw new Error('Password is not correct')
             }

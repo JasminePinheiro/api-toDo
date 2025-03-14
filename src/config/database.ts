@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
 
 // Conexão ao MongoDB
 const connectToDB = async () => {

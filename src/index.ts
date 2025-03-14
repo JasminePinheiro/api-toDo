@@ -7,7 +7,6 @@ import { TasksRepository } from './repositories/tasks/tasks_repository';
 import { UserController } from './controllers/user_controller';
 import { UserService } from './services/user_service';
 import { auth } from './middlewares/auth';
-// import { validateTaskCreation } from './middlewares/TaskMiddlewares';
 
 const main = () => {
     const app = express();
@@ -44,9 +43,16 @@ const main = () => {
             res.status(500).json({ message: "Erro interno do servidor" });
         });
     });
+    app.post("/refreshToken", (req: Request, res: Response) => {
+        userController.refreshToken(req, res).catch((error) => {
+            console.error("Erro ao processar refreshToken:", error);
+            res.status(500).json({ message: "Erro interno do servidor" });
+        });
+    });
     app.listen(port, () =>
         console.log(`Servidor rodando em http://localhost:${port}`)
     );
+
 }
 
 main()
